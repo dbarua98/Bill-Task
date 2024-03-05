@@ -9,6 +9,7 @@ import ProfileHome from "./Components/ProfilesHome";
 import ProfileCategory from "./Components/ProfileCategory"
 import Footer from "./Components/Footer";
 import CreateBill from './Components/CreateBill';
+import AddCustomer from './Components/AddCustomer';
 function App() {
   return (
     <div>
@@ -20,6 +21,8 @@ function App() {
             <Route path="/home" element={<ProfileHome />} />
             <Route path="/category" element={<ProfileCategory />} />
             <Route path="/createbill" element={<CreateBill />} />
+            <Route path="/addCustomer" element={<AddCustomer />} />
+            <Route path="/addCustomer/:id" element={<AddCustomer/>} />
           </Routes>
           <Footer/>
         </BrowserRouter>

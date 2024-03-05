@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import axios from "axios";
 
 
 const Login = () => {
@@ -18,9 +19,18 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const user = dummyUsers.find(
-      (user) => user.email === email && user.password === password
-    );
+    const user = axios.post(`https://reacttestprojectapi.azurewebsites.net/api/UserManagement/AuthenticateUser?UserName=${email}&Password=${password}`)
+    .then((response) => {
+      // console.log(response);
+      const token = response.data.authToken;
+
+      // Set the token in local storage
+      localStorage.setItem('token', token);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
 
     if (user) {
       console.log("Successful login!");
