@@ -10,8 +10,11 @@ const NavigationBar = () => {
     setIsLoggedIn(false);
   };
 
+  
   return (
     <div>
+      {console.log("isLoggedIn",isLoggedIn)}
+
       {isLoggedIn  && (
         <div className="topnav">
           <Link to="/home" className="active">

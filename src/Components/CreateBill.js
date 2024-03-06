@@ -126,10 +126,19 @@ const handleNetAmount=()=>{
    
     console.log("object", billData);
 
-  
+  const data = {billNo: Number(billData.billNumber),
+    billID:id,
+    billDate:billData.billDate,
+    customerID:billData.customerID,
+    netAmount:billData.netAmount,
+    totalDiscountAmount:billData.totalDiscountAmount,
+    Remarks:billData.Remarks,
+    billItems:billData.billItems
+    }
+    console.log(data)
 if(id){
   try {
-    const response = await axios.put('https://reacttestprojectapi.azurewebsites.net/api/BillManagement/Bill/Update',{billNo: Number(billData.billNumber),
+    const response = await axios.put('https://reacttestprojectapi.azurewebsites.net/api/BillManagement/Bill/Update',{billID:id,billNo: Number(billData.billNumber),
     billDate:billData.billDate,
     customerID:billData.customerID,
     netAmount:billData.netAmount,

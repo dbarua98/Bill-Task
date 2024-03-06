@@ -27,7 +27,7 @@ const Login = () => {
       // Set the token in local storage
       localStorage.setItem('token', token);
       navigate('/home')
-      // handleLogin();
+      handleLogin();
     })
     .catch((error) => {
       console.error(error);
