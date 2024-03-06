@@ -7,22 +7,11 @@ import "react-quill/dist/quill.snow.css";
 import "react-datepicker/dist/react-datepicker.css";
 // import "react-select/dist/react-select.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Category = () => {
  const  navigate = useNavigate();
-  const [bills, setBills] = useState([
-    {
-      id: 1,
-      billNumber: "B0001",
-      billDate: new Date(),
-      customer: { value: 1, label: "John Doe" },
-      description: "Item 1",
-      rate: 50,
-      qty: 2,
-      remarks: "<p>Sample remarks</p>",
-    },
-    // Add more sample data as needed
-  ]);
+  const [bills, setBills] = useState();
 
   const [selectedBill, setSelectedBill] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,20 +22,59 @@ const Category = () => {
     // Add more customers as needed
   ]);
 
+  
+  const token = localStorage.getItem('token');
+  const getBills = async()=>{
+
+    if (token) {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      };
+    try {
+      axios.get('https://reacttestprojectapi.azurewebsites.net/api/BillManagement/Bill/GetList/', config)
+      .then((response) => {
+        console.log("billbill",response.data);
+
+        setBills(response?.data)
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    } catch (error) {
+      
+    }
+  }
+}
+useEffect(()=>{
+  getBills()
+},[])
+
   const handleAddClick = () => {
     navigate("/createbill")
     // setSelectedBill(null);
     // setIsModalOpen(true);
   };
 
-  const handleEditClick = (bill) => {
-    // setSelectedBill(bill);
-    // setIsModalOpen(true);
+  const handleEditClick = (billID) => {
+  navigate(`/createbill/${billID}`)
   };
 
-  const handleDeleteClick = (billId) => {
-    const updatedBills = bills.filter((bill) => bill.id !== billId);
-    setBills(updatedBills);
+  const handleDeleteClick = async(billId) => {
+    
+   try {
+    const response = await axios.delete(`https://reacttestprojectapi.azurewebsites.net/api/BillManagement/Bill/Delete/${billId}`,{
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    console.log("response: " ,response);
+    getBills();
+   } catch (error) {
+    console.log("error: " ,error);
+   }
   };
 
   const handleModalClose = () => {
@@ -83,148 +111,52 @@ const Category = () => {
       // Add more customers as needed
     ]);
   }, []);
-
+  console.log("qwert123",bills)
   return (
-    <div>
-      <div>
+    <div className="container">
+      <div className="w-25">
         <Button variant="primary" onClick={handleAddClick}>
           Add
         </Button>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Bill Number</th>
-            <th>Bill Date</th>
-            <th>Customer</th>
-            <th>Description</th>
-            <th>Rate</th>
-            <th>Qty</th>
-            <th>Amount</th>
-            <th>Remarks</th>
-            <th>Actions</th>
+      <table className="container">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bill Number</th>
+          <th>Bill Date</th>
+          <th>Customer</th>
+          <th>Amount</th>
+          <th>Remark</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {bills?.map((bill) => (
+          <tr key={bill?.primaryKeyID}>
+            <td>{bill?.primaryKeyID}</td>
+            <td>{bill?.billNo}</td>
+            <td>{bill?.billDate.substr(0,10)}</td>
+            <td>{bill?.customerName}</td>
+            <td>{bill?.netAmount}</td>
+            <td>{bill?.remarks}</td>
+            <td className="d-flex">
+              <Button variant="info" onClick={() => handleEditClick(bill.billID)}>
+                Edit
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => handleDeleteClick(bill.billID)}
+              >
+                Delete
+              </Button>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {bills.map((bill) => (
-            <tr key={bill.id}>
-              <td>{bill.id}</td>
-              <td>{bill.billNumber}</td>
-              <td>{bill.billDate.toLocaleDateString()}</td>
-              <td>{bill.customer.label}</td>
-              <td>{bill.description}</td>
-              <td>{bill.rate}</td>
-              <td>{bill.qty}</td>
-              <td>{bill.rate * bill.qty}</td>
-              <td dangerouslySetInnerHTML={{ __html: bill.remarks }}></td>
-              <td>
-                <Button variant="info" onClick={() => handleEditClick(bill)}>
-                  Edit
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => handleDeleteClick(bill.id)}
-                >
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        ))}
+      </tbody>
+    </table>
 
-      {/* {isModalOpen && (
-        <Modal show={isModalOpen} onHide={handleModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedBill ? "Edit Bill" : "Add Bill"}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="formBillNumber">
-                <Form.Label>Bill Number</Form.Label>
-                <Form.Control
-                  type="text"
-                  readOnly
-                  value={selectedBill ? selectedBill.billNumber : ""}
-                />
-              </Form.Group>
-              <Form.Group controlId="formBillDate">
-                <Form.Label>Bill Date</Form.Label>
-                <DatePicker
-                  selected={
-                    selectedBill ? new Date(selectedBill.billDate) : new Date()
-                  }
-                  onChange={(date) =>
-                    setSelectedBill({ ...selectedBill, billDate: date })
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="formCustomer">
-                <Form.Label>Customer</Form.Label>
-                <Select
-                  options={customers}
-                  value={selectedBill ? selectedBill.customer : null}
-                  onChange={(selectedOption) =>
-                    setSelectedBill({ ...selectedBill, customer: selectedOption })
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="formDescription">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={selectedBill ? selectedBill.description : ""}
-                  onChange={(e) =>
-                    setSelectedBill({ ...selectedBill, description: e.target.value })
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="formRate">
-                <Form.Label>Rate</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={selectedBill ? selectedBill.rate : ""}
-                  onChange={(e) =>
-                    setSelectedBill({ ...selectedBill, rate: parseFloat(e.target.value) })
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="formQty">
-                <Form.Label>Qty</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={selectedBill ? selectedBill.qty : ""}
-                  onChange={(e) =>
-                    setSelectedBill({ ...selectedBill, qty: parseFloat(e.target.value) })
-                  }
-                />
-              </Form.Group>
-              <Form.Group controlId="formRemarks">
-                <Form.Label>Remarks</Form.Label>
-                <ReactQuill
-                  value={selectedBill ? selectedBill.remarks : ""}
-                  onChange={(value) =>
-                    setSelectedBill({ ...selectedBill, remarks: value })
-                  }
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="primary"
-              onClick={() => handleSaveBill(selectedBill)}
-            >
-              Save
-            </Button>
-            <Button variant="secondary" onClick={handleModalClose}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )} */}
     </div>
   );
 };

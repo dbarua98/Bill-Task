@@ -21,6 +21,7 @@ function App() {
             <Route path="/home" element={<ProfileHome />} />
             <Route path="/category" element={<ProfileCategory />} />
             <Route path="/createbill" element={<CreateBill />} />
+            <Route path="/createbill/:id" element={<CreateBill />} />
             <Route path="/addCustomer" element={<AddCustomer />} />
             <Route path="/addCustomer/:id" element={<AddCustomer/>} />
           </Routes>
