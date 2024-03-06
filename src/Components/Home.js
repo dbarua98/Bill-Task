@@ -133,27 +133,27 @@ console.log("qwerta123456",customer)
           {customerName ? "Update" : "Add"}
         </button>
       </form> */}
-      <button onClick={()=>navigate('/addcustomer ')} >Add</button>
+      <button onClick={()=>navigate('/addcustomer ')} className="w-25 rounded-2" >Add</button>
 
       <h2>Customer List</h2>
-      <table className="customer-table">
-        <thead>
+      <table className="customer-table container">
+        <thead style={{textAlign:"center"}}>
           <tr>
             <th>Serial No.</th>
             <th>Name</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{textAlign:"center"}}>
           {customers.map((customer) => (
             <tr key={customer.customerID}>
               <td>{customer.customerID}</td>
               <td>{customer.customerName}</td>
-              <td>
-                <button className="action-button" onClick={() => handleDeleteUser(customer.customerID)}>
+              <td className="d-flex gap-2">
+                <button className="action-button rounded-2" onClick={() => handleDeleteUser(customer.customerID)}>
                   Delete
                 </button>
-                <button className="action-button" onClick={() =>navigate(`/addCustomer/${customer.customerID}`)}>
+                <button className="action-button rounded-2" onClick={() =>navigate(`/addCustomer/${customer.customerID}`)}>
                   Edit
                 </button>
               </td>

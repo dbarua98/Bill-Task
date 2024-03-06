@@ -113,14 +113,14 @@ useEffect(()=>{
   }, []);
   console.log("qwert123",bills)
   return (
-    <div className="container">
+    <div className="container " style={{    height:"100vh"}}>
       <div className="w-25">
         <Button variant="primary" onClick={handleAddClick}>
           Add
         </Button>
       </div>
 
-      <table className="container">
+      <table className="container text-center">
       <thead>
         <tr>
           <th>ID</th>
@@ -142,7 +142,7 @@ useEffect(()=>{
             <td>{bill?.netAmount}</td>
             <td>{bill?.remarks}</td>
             <td className="d-flex">
-              <Button variant="info" onClick={() => handleEditClick(bill.billID)}>
+              <Button className="mx-2" variant="info" onClick={() => handleEditClick(bill.billID)}>
                 Edit
               </Button>
               <Button
