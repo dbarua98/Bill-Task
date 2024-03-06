@@ -101,7 +101,7 @@ console.log("asdfg",response)
     },[])
     console.log('1234',id,editData)
   return (
-    <div>
+    <div className='container w-75 '>
       <form onSubmit={handleFormSubmit} className="form-container">
         <label className="form-label">
           Customer Name:
@@ -113,7 +113,7 @@ console.log("asdfg",response)
             required
           />
         </label>
-        <button type="submit" className="form-submit">
+        <button type="submit" className="form-submit rounded-2">
           {id?"Edit":"Add"}
         </button>
       </form>

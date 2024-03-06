@@ -6,10 +6,10 @@ import Login from "./Components/Login";
 import NavigationBar from "./Components/NavigationBar";
 import { AuthProvider } from "./Components/AuthContext";
 import ProfileHome from "./Components/ProfilesHome";
-import ProfileCategory from "./Components/ProfileCategory"
 import Footer from "./Components/Footer";
 import CreateBill from './Components/CreateBill';
 import AddCustomer from './Components/AddCustomer';
+import BillList from './Components/BillList';
 function App() {
   return (
     <div>
@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<ProfileHome />} />
-            <Route path="/category" element={<ProfileCategory />} />
+            <Route path="/bill" element={<BillList />} />
             <Route path="/createbill" element={<CreateBill />} />
             <Route path="/createbill/:id" element={<CreateBill />} />
             <Route path="/addCustomer" element={<AddCustomer />} />

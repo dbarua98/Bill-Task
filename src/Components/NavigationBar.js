@@ -12,12 +12,12 @@ const NavigationBar = () => {
 
   return (
     <div>
-      {isLoggedIn && (
+      {isLoggedIn  && (
         <div className="topnav">
           <Link to="/home" className="active">
             Customer
           </Link>
-          <Link to="/category">Bill</Link>
+          <Link to="/bill">Bill</Link>
           <Link className="split" onClick={handleLogout} to="/">
             Logout
           </Link>

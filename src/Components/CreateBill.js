@@ -143,7 +143,7 @@ if(id){
       },
     });
     console.log('Response from API:', response.data);
-    navigate("/category")
+    navigate("/bill")
   } catch (error) {
     console.error('Error making API request:', error);
   }
@@ -166,7 +166,7 @@ else{
       },
     });
     console.log('Response from API:', response.data);
-    navigate("/category")
+    navigate("/bill")
   } catch (error) {
     console.error('Error making API request:', error);
   }

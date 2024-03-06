@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Category = () => {
+const BillList = () => {
  const  navigate = useNavigate();
   const [bills, setBills] = useState();
 
@@ -140,7 +140,7 @@ useEffect(()=>{
             <td>{bill?.billDate.substr(0,10)}</td>
             <td>{bill?.customerName}</td>
             <td>{bill?.netAmount}</td>
-            <td>{bill?.remarks}</td>
+            <td>{bill?.remarks && bill.remarks.replace(/<[^>]*>/g, '').substring(0, 50)}</td>
             <td className="d-flex">
               <Button className="mx-2" variant="info" onClick={() => handleEditClick(bill.billID)}>
                 Edit
@@ -161,4 +161,4 @@ useEffect(()=>{
   );
 };
 
-export default Category;
+export default BillList;
