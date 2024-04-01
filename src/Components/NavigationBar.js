@@ -1,27 +1,33 @@
 import { Link } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
-import { useContext } from "react";
-
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const NavigationBar = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [isToken, setIsToken] = useState(false);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      setIsToken(true);
+    } else {
+      setIsToken(false);
+    }
+  }, [token]);
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleToLogout = () => {
+    localStorage.removeItem("token");
+    setIsToken(false);
+    navigate("/");
   };
 
-  
   return (
     <div>
-      {console.log("isLoggedIn",isLoggedIn)}
-
-      {isLoggedIn  && (
+      {isToken && (
         <div className="topnav">
           <Link to="/home" className="active">
             Customer
           </Link>
           <Link to="/bill">Bill</Link>
-          <Link className="split" onClick={handleLogout} to="/">
+          <Link className="split" onClick={handleToLogout} to="/">
             Logout
           </Link>
         </div>
